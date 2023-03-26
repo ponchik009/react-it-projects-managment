@@ -1,0 +1,48 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  background: #e9eaf1;
+  box-shadow: inset 4px -4px 4px rgba(0, 0, 0, 0.25),
+    inset -4px 4px 4px rgba(0, 0, 0, 0.25);
+
+  height: 464px;
+  overflow-y: auto;
+  width: 736px;
+  padding: 32px 16px;
+}
+
+.item {
+  cursor: pointer;
+
+  border: 1px solid rgba(29, 34, 45, 0.5);
+  border-radius: 3px;
+  background: transparent;
+  padding: 6px 18px;
+
+  display: flex;
+  width: 636px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.item_left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-weight: 400;
+  font-size: 18px;
+  color: #1d222d;
+}
+
+.additional {
+  font-weight: 400;
+  font-size: 18px;
+  color: rgba(29, 34, 45, 0.5);
+}

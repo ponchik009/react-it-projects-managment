@@ -1,0 +1,41 @@
+.header {
+  background: #1d222d;
+
+  display: flex;
+
+  justify-content: space-around;
+  align-items: center;
+  padding: 48px 0;
+
+  color: rgba(233, 234, 241, 1);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.left {
+  text-transform: uppercase;
+}
+
+.center {
+  display: flex;
+  text-transform: uppercase;
+  gap: 48px;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.right > button {
+  cursor: pointer;
+}
+
+.activeLink {
+  color: orange;
+}
