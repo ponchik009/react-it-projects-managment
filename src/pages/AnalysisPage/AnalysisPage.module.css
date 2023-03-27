@@ -1,0 +1,23 @@
+.content {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.datesInput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 60vh;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}

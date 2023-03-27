@@ -23,6 +23,16 @@ export class ClientsApi {
       region: "Московсая область",
       projects: [1, 2],
     },
+    {
+      id: 2,
+      name: "Петров П.А.",
+      email: "c@c.c",
+      phone: "79005553737",
+      type: ClientType.phys,
+      city: "Ангарск",
+      region: "Иркутская область",
+      projects: [],
+    },
   ];
 
   public static async getAllClients(): Promise<Client[]> {

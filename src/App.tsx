@@ -1,15 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  createBrowserRouter,
-  Route,
-  RouterProvider,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
-import "./App.css";
 import { MainLayout } from "./layouts/MainLayout";
-import { AnalisysPage } from "./pages/AnalisysPage/AnalisysPage";
+import { AnalysisGetPage } from "./pages/AnalysisGetPage/AnalysisGetPage";
+import { AnalysisPage } from "./pages/AnalysisPage/AnalysisPage";
 import { AuthPage } from "./pages/AuthPage/AuthPage";
 import { ClientPage } from "./pages/ClientPage/ClientPage";
 import { ClientsPage } from "./pages/ClientsPage/ClientsPage";
@@ -64,7 +58,10 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/create" element={<CreateProjectPage />} />
           </Route>
-          <Route path="/analisys" element={<AnalisysPage />} />
+          <Route>
+            <Route path="/analysis" element={<AnalysisPage />} />
+            <Route path="/analysis/get" element={<AnalysisGetPage />} />
+          </Route>
         </Routes>
       </MainLayout>
     </AuthContext.Provider>

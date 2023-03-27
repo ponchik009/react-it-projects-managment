@@ -43,3 +43,16 @@ export const PROJECT_STATUSES_COLORS = {
   [ProjectStatuses.ended]: "#219653",
   [ProjectStatuses.rejected]: "#D22043",
 };
+
+export const RADIAN = Math.PI / 180;
+
+export const CLIENT_TYPE_COLORS = ["#0263FF", "#FF7723"];
+
+export const PROJECT_TYPE_COLORS = [
+  "#0263FF",
+  "#FF7723",
+  "#8E30FF",
+  "#C06950",
+  "rgba(29, 34, 45, 0.5)",
+  "#219654",
+];
