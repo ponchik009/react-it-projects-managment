@@ -26,7 +26,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <div className={styles.center}>
             <Link path="/clients" title="Клиенты" />
             <Link path="/projects" title="Проекты" />
-            <Link path="/analisys" title="Анализ" />
+            <Link path="/analysis" title="Анализ" />
           </div>
         )}
         <div className={styles.right}>
