@@ -11,7 +11,7 @@ interface MainLayoutProps {
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const { user, changeAuth, setUser } = useContext(AuthContext);
+  const { user, changeAuth, isAuth, setUser } = useContext(AuthContext);
 
   const onLogout = () => {
     changeAuth(false);
@@ -22,14 +22,22 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <>
       <header className={styles.header}>
         <div className={styles.left}>Logo</div>
-        <div className={styles.center}>
-          <Link path="/clients" title="Клиенты" />
-          <Link path="/projects" title="Проекты" />
-          <Link path="/analisys" title="Анализ" />
-        </div>
+        {isAuth && (
+          <div className={styles.center}>
+            <Link path="/clients" title="Клиенты" />
+            <Link path="/projects" title="Проекты" />
+            <Link path="/analisys" title="Анализ" />
+          </div>
+        )}
         <div className={styles.right}>
-          <div>{user?.name}</div>
-          <button onClick={onLogout}>Выйти из аккаунта</button>
+          {isAuth ? (
+            <>
+              <div>{user?.name}</div>
+              <button onClick={onLogout}>Выйти из аккаунта</button>
+            </>
+          ) : (
+            <div>Вход</div>
+          )}
         </div>
       </header>
       <div style={{ paddingTop: 36 }}>{children}</div>

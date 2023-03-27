@@ -14,12 +14,12 @@ import { Select } from "../../Select/Select";
 // @ts-ignore
 import styles from "../ClientForm.module.css";
 
-interface ClientShowForm {
+interface ClientShowFormProps {
   onEditClick: () => void;
   client: Client;
 }
 
-export const ClientShowForm: React.FC<ClientShowForm> = ({
+export const ClientShowForm: React.FC<ClientShowFormProps> = ({
   onEditClick,
   client,
 }) => {
@@ -38,13 +38,14 @@ export const ClientShowForm: React.FC<ClientShowForm> = ({
           label="Наименование"
           onChange={() => {}}
           value={client.name}
-          placeholder="Введите наименование клиента"
+          placeholder="Наименование клиента"
           type="text"
           disabled
+          required={false}
         />
         <Select
           id="type"
-          required
+          required={false}
           value={client.type}
           label="Тип лица"
           onChange={() => {}}
@@ -59,10 +60,11 @@ export const ClientShowForm: React.FC<ClientShowForm> = ({
           placeholder="example@gmail.com"
           type="email"
           disabled
+          required={false}
         />
         <Select
           id="region"
-          required
+          required={false}
           value={client.region}
           label="Регион"
           onChange={() => {}}
@@ -71,7 +73,7 @@ export const ClientShowForm: React.FC<ClientShowForm> = ({
         />
         <Select
           id="city"
-          required
+          required={false}
           value={client.city}
           label="Город"
           onChange={() => {}}
@@ -85,6 +87,7 @@ export const ClientShowForm: React.FC<ClientShowForm> = ({
           value={client.phone}
           type="tel"
           disabled
+          required={false}
         />
       </div>
       <div className={styles.buttons}>

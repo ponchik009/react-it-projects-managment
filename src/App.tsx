@@ -51,35 +51,22 @@ function App() {
 
   return (
     <AuthContext.Provider value={context}>
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route
-          path="*"
-          element={
-            <MainLayout>
-              <Routes>
-                <Route>
-                  <Route path="/clients/:id" element={<ClientPage />} />
-                  <Route path="/clients" element={<ClientsPage />} />
-                  <Route
-                    path="/clients/create"
-                    element={<CreateClientPage />}
-                  />
-                </Route>
-                <Route>
-                  <Route path="/projects/:id" element={<ProjectPage />} />
-                  <Route path="/projects" element={<ProjectsPage />} />
-                  <Route
-                    path="/projects/create"
-                    element={<CreateProjectPage />}
-                  />
-                </Route>
-                <Route path="/analisys" element={<AnalisysPage />} />
-              </Routes>
-            </MainLayout>
-          }
-        />
-      </Routes>
+      <MainLayout>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route>
+            <Route path="/clients/:id" element={<ClientPage />} />
+            <Route path="/clients" element={<ClientsPage />} />
+            <Route path="/clients/create" element={<CreateClientPage />} />
+          </Route>
+          <Route>
+            <Route path="/projects/:id" element={<ProjectPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/create" element={<CreateProjectPage />} />
+          </Route>
+          <Route path="/analisys" element={<AnalisysPage />} />
+        </Routes>
+      </MainLayout>
     </AuthContext.Provider>
   );
 }

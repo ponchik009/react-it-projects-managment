@@ -35,7 +35,7 @@ export const Select: React.FC<SelectProps> = ({
         gap: "64px",
       }}
     >
-      <div style={{ maxWidth: "96px" }}>
+      <div style={{ maxWidth: "96px", display: "flex" }}>
         {required && (
           <span style={{ color: "#FF5B2E", marginRight: 8 }}>*</span>
         )}

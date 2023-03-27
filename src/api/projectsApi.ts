@@ -27,7 +27,7 @@ export class ProjectsApi {
     },
     {
       id: 2,
-      name: "Интеграция наркотического модуля в ПАО Аптека",
+      name: "Интеграция модуля поставщика в ПАО Аптека",
       clientId: 1,
       dateStart: new Date("2023-03-01"),
       dateEnd: new Date("2023-03-25"),

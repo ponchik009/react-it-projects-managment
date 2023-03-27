@@ -1,8 +1,14 @@
 import React, { FormEvent, useContext, useState } from "react";
 import { AuthApi } from "../../api/authApi";
 import { AuthContext } from "../../App";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { PageTitle } from "../../components/PageTitle/PageTitle";
 import { useInput } from "../../hooks/useInput";
 import { Admin } from "../../types/interfaces";
+
+// @ts-ignore
+import styles from "./AuthPage.module.css";
 
 export const AuthPage = () => {
   const {
@@ -35,24 +41,33 @@ export const AuthPage = () => {
   };
 
   return (
-    <div>
-      {error && <div>{error}</div>}
-      <form onSubmit={onFormSubmit}>
+    <div className={styles.page}>
+      <PageTitle title="Вход" />
+      <form onSubmit={onFormSubmit} className={styles.form}>
+        {error && <div className={styles.error}>{error}</div>}
         <input
           type="text"
-          name="login"
           id="login"
           value={login}
           onChange={setLogin}
+          placeholder="Логин"
+          className={`${styles.input} ${error && styles.inputError}`}
         />
         <input
           type="password"
-          name="password"
           id="password"
           value={password}
           onChange={setPassword}
+          placeholder="Пароль"
+          className={`${styles.input} ${error && styles.inputError}`}
         />
-        <input type="submit" value="Войти" />
+        <div style={{ height: 24 }}></div>
+        <Button
+          text="Войти"
+          onClick={onFormSubmit}
+          color="#219653"
+          type="filled"
+        />
       </form>
     </div>
   );

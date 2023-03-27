@@ -1,7 +1,7 @@
 import React from "react";
 
 interface InputProps {
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   label: string;
@@ -9,6 +9,7 @@ interface InputProps {
   id: string;
   type?: React.HTMLInputTypeAttribute;
   disabled?: boolean;
+  color?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ export const Input: React.FC<InputProps> = ({
   id,
   type = "text",
   disabled = false,
+  color = "rgba(0, 0, 0, 1)",
 }) => {
   return (
     <label
@@ -43,7 +45,7 @@ export const Input: React.FC<InputProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        style={{ padding: "8px 16px", width: "512px" }}
+        style={{ padding: "8px 16px", width: "512px", color }}
         disabled={disabled}
       />
     </label>

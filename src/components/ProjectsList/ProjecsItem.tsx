@@ -27,6 +27,7 @@ export const ProjecsItem: React.FC<ProjectItemProps> = ({ project }) => {
     <div className={styles.item} onClick={onProjectClick}>
       <div className={styles.item_left}>
         <span className={styles.name}>{project.name}</span>
+        <span className={styles.additional}>{project.type}</span>
         <span className={styles.additional}>{client?.name}</span>
       </div>
       <span

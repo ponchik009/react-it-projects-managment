@@ -1,0 +1,10 @@
+.content {
+  margin-left: 20%;
+  min-height: 600px;
+  width: 60%;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: start;
+}
