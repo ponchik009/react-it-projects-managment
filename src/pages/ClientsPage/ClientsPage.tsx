@@ -26,16 +26,26 @@ export const ClientsPage = () => {
   }, []);
 
   // Фильтры
-  const cityOptions = Object.values(CITIES).flat();
-  const typeOptions = Object.values(ClientType);
+  const {
+    hook: [search, onSearchChange],
+  } = useInput<string>("");
+  const cityOptions = ["Все", ...Object.values(CITIES).flat()];
+  const typeOptions = ["Все", ...Object.values(ClientType)];
 
   const {
     hook: [currentCity, onCityChange],
-  } = useInput<CityValues>(cityOptions[0]);
+  } = useInput<CityValues | "Все">("Все");
 
   const {
     hook: [currentType, onTypeChange],
-  } = useInput<ClientType>(ClientType.law);
+  } = useInput<ClientType | "Все">("Все");
+
+  useEffect(() => {
+    ClientsApi.getAllClients(search, {
+      cities: currentCity === "Все" ? [] : [currentCity],
+      types: currentType === "Все" ? [] : [currentType],
+    }).then(setClients);
+  }, [search, currentCity, currentType]);
 
   return (
     <div className={styles.content}>
@@ -45,32 +55,44 @@ export const ClientsPage = () => {
         <Button color="#219653" text="Добавить" onClick={onAddClick} />
       </div>
       <div className={styles.right}>
-        <input type="text" name="search" id="search" placeholder="Поиск..." />
+        <input
+          type="text"
+          value={search}
+          onChange={onSearchChange}
+          id="search"
+          placeholder="Поиск..."
+        />
         <span>Фильтры</span>
-        <select
-          name="city"
-          id="city"
-          value={currentCity}
-          onChange={onCityChange}
-        >
-          {cityOptions.map((cityOption) => (
-            <option value={cityOption} key={cityOption}>
-              {cityOption}
-            </option>
-          ))}
-        </select>
-        <select
-          name="type"
-          id="type"
-          value={currentType}
-          onChange={onTypeChange}
-        >
-          {typeOptions.map((typeOption) => (
-            <option value={typeOption} key={typeOption}>
-              {typeOption}
-            </option>
-          ))}
-        </select>
+        <label htmlFor="city">
+          Город
+          <select
+            name="city"
+            id="city"
+            value={currentCity}
+            onChange={onCityChange}
+          >
+            {cityOptions.map((cityOption) => (
+              <option value={cityOption} key={cityOption}>
+                {cityOption}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label htmlFor="type">
+          Тип клиента
+          <select
+            name="type"
+            id="type"
+            value={currentType}
+            onChange={onTypeChange}
+          >
+            {typeOptions.map((typeOption) => (
+              <option value={typeOption} key={typeOption}>
+                {typeOption}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
     </div>
   );

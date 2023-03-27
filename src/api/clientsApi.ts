@@ -1,5 +1,6 @@
 import { ClientType } from "../types/enums";
 import { Client } from "../types/interfaces";
+import { ClientFilters } from "../types/types";
 
 export class ClientsApi {
   private static clients: Client[] = [
@@ -35,8 +36,29 @@ export class ClientsApi {
     },
   ];
 
-  public static async getAllClients(): Promise<Client[]> {
-    return new Promise((resolve) => resolve(this.clients));
+  public static async getAllClients(
+    search: string = "",
+    filters: ClientFilters = { cities: [], types: [] }
+  ): Promise<Client[]> {
+    const searchedClients = this.clients.filter((client) =>
+      client.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const filteredByCityClients =
+      filters.cities.length > 0
+        ? searchedClients.filter((client) =>
+            filters.cities.includes(client.city)
+          )
+        : searchedClients;
+
+    const filteredByTypeClients =
+      filters.types.length > 0
+        ? filteredByCityClients.filter((client) =>
+            filters.types.includes(client.type)
+          )
+        : filteredByCityClients;
+
+    return new Promise((resolve) => resolve(filteredByTypeClients));
   }
 
   public static async getClient(id: number): Promise<Client | string> {

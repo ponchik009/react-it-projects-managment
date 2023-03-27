@@ -1,7 +1,7 @@
 import React from "react";
 
 export const useInput = <T>(initialValue: T) => {
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = React.useState<T>(initialValue);
 
   const onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

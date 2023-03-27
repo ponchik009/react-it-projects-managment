@@ -1,5 +1,6 @@
 import { ProjectStages, ProjectStatuses, ProjectType } from "../types/enums";
 import { Project } from "../types/interfaces";
+import { ProjectFIlters } from "../types/types";
 
 export class ProjectsApi {
   private static projects: Project[] = [
@@ -38,8 +39,36 @@ export class ProjectsApi {
     },
   ];
 
-  public static async getAllProjects(): Promise<Project[]> {
-    return new Promise((resolve) => resolve(this.projects));
+  public static async getAllProjects(
+    search: string = "",
+    filters: ProjectFIlters = { clients: [], types: [], statuses: [] }
+  ): Promise<Project[]> {
+    const searchedProjects = this.projects.filter((project) =>
+      project.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const filteredByClientProjects =
+      filters.clients.length > 0
+        ? searchedProjects.filter((project) =>
+            filters.clients.includes(project.clientId)
+          )
+        : searchedProjects;
+
+    const filteredByTypeClients =
+      filters.types.length > 0
+        ? filteredByClientProjects.filter((project) =>
+            filters.types.includes(project.type)
+          )
+        : filteredByClientProjects;
+
+    const filteredByStatusClients =
+      filters.statuses.length > 0
+        ? filteredByTypeClients.filter((project) =>
+            filters.statuses.includes(project.status)
+          )
+        : filteredByTypeClients;
+
+    return new Promise((resolve) => resolve(filteredByStatusClients));
   }
 
   public static async getProject(id: number): Promise<Project | string> {

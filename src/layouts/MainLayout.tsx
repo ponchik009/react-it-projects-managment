@@ -40,7 +40,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           )}
         </div>
       </header>
-      <div style={{ paddingTop: 36 }}>{children}</div>
+      <div style={{ paddingTop: 36, paddingBottom: 36 }}>{children}</div>
     </>
   );
 };
