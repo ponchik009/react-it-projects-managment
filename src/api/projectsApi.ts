@@ -1,6 +1,6 @@
 import { ProjectStages, ProjectStatuses, ProjectType } from "../types/enums";
 import { Project } from "../types/interfaces";
-import { ProjectFIlters } from "../types/types";
+import { ProjectFilters } from "../types/types";
 
 export class ProjectsApi {
   private static projects: Project[] = [
@@ -37,11 +37,27 @@ export class ProjectsApi {
       stage: ProjectStages.ended,
       status: ProjectStatuses.ended,
     },
+    {
+      id: 3,
+      name: "Сеть парикхмахерских Барбершоп - автоматизация",
+      clientId: 2,
+      dateStart: new Date("2023-03-01"),
+      dateEnd: null,
+      type: ProjectType.automatization,
+      planeDateEnd: new Date("2023-04-25"),
+      stage: ProjectStages.development,
+      status: ProjectStatuses.work,
+    },
   ];
 
   public static async getAllProjects(
     search: string = "",
-    filters: ProjectFIlters = { clients: [], types: [], statuses: [] }
+    filters: ProjectFilters = {
+      clients: [],
+      types: [],
+      statuses: [],
+      date: null,
+    }
   ): Promise<Project[]> {
     const searchedProjects = this.projects.filter((project) =>
       project.name.toLowerCase().includes(search.toLowerCase())
@@ -54,21 +70,28 @@ export class ProjectsApi {
           )
         : searchedProjects;
 
-    const filteredByTypeClients =
+    const filteredByTypeProjects =
       filters.types.length > 0
         ? filteredByClientProjects.filter((project) =>
             filters.types.includes(project.type)
           )
         : filteredByClientProjects;
 
-    const filteredByStatusClients =
+    const filteredByStatusProjects =
       filters.statuses.length > 0
-        ? filteredByTypeClients.filter((project) =>
+        ? filteredByTypeProjects.filter((project) =>
             filters.statuses.includes(project.status)
           )
-        : filteredByTypeClients;
+        : filteredByTypeProjects;
 
-    return new Promise((resolve) => resolve(filteredByStatusClients));
+    const filteredByDateProjects = filters.date
+      ? filteredByStatusProjects.filter(
+          (p) =>
+            p.dateStart >= filters.date!.from && p.dateStart <= filters.date!.to
+        )
+      : filteredByStatusProjects;
+
+    return new Promise((resolve) => resolve(filteredByDateProjects));
   }
 
   public static async getProject(id: number): Promise<Project | string> {

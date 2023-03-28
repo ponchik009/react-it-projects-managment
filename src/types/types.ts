@@ -12,8 +12,12 @@ export type ClientFilters = {
   types: ClientType[];
 };
 
-export type ProjectFIlters = {
+export type ProjectFilters = {
   statuses: ProjectStatuses[];
   types: ProjectType[];
   clients: number[];
+  date: {
+    from: Date;
+    to: Date;
+  } | null;
 };

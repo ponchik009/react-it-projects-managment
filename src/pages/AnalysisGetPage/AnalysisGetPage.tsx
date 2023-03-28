@@ -1,19 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { ClientsApi } from "../../api/clientsApi";
+import { ProjectsApi } from "../../api/projectsApi";
+import { Chart } from "../../components/Chart/Chart";
+import { CustomBarChart } from "../../components/Chart/CustomBarChart/CustomBarChart";
+import { CustomLineChart } from "../../components/Chart/CustomLineChart/CustomLineChart";
+import { CustomPieChart } from "../../components/Chart/CustomPieChart/CustomPieChart";
+import { Input } from "../../components/Input/Input";
 import { PageTitle } from "../../components/PageTitle/PageTitle";
-import { CLIENT_TYPE_COLORS } from "../../const/const";
-import { ClientType } from "../../types/enums";
-import { Client } from "../../types/interfaces";
+import {
+  CLIENT_TYPE_COLORS,
+  PROJECT_STATUSES_COLORS,
+  PROJECT_TYPE_COLORS,
+} from "../../const/const";
+import { ClientType, ProjectStatuses, ProjectType } from "../../types/enums";
+import { Client, DataForPieChart, Project } from "../../types/interfaces";
 
 // @ts-ignore
 import styles from "./AnalysisGetPage.module.css";
 
-interface DataForPieChart {
-  name: string;
-  value: number;
-}
+const countPoints = (projects: Project[]) => {
+  const base: { [key: string]: any } = projects.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.dateStart.toISOString().split("T")[0]]: {
+        name: cur.dateStart.toISOString().split("T")[0],
+        [ProjectStatuses.work]: 0,
+        [ProjectStatuses.ended]: 0,
+        [ProjectStatuses.rejected]: 0,
+      },
+      [cur.dateEnd?.toISOString().split("T")[0] || "off"]: {
+        name: cur.dateEnd?.toISOString().split("T")[0] || "off",
+        [ProjectStatuses.work]: 0,
+        [ProjectStatuses.ended]: 0,
+        [ProjectStatuses.rejected]: 0,
+      },
+    }),
+    {}
+  );
+
+  for (let date of Object.keys(base)) {
+    projects.forEach((p) => {
+      if (p.dateStart.toISOString().split("T")[0] <= date) {
+        base[date][ProjectStatuses.work] += 1;
+      }
+      if (p.dateEnd && p.dateEnd.toISOString().split("T")[0] <= date) {
+        base[date][ProjectStatuses.ended] += 1;
+        base[date][ProjectStatuses.work] -= 1;
+      }
+      if (
+        p.dateStart.toISOString().split("T")[0] <= date &&
+        p.status === ProjectStatuses.rejected
+      ) {
+        base[date][ProjectStatuses.rejected] += 1;
+        base[date][ProjectStatuses.work] -= 1;
+      }
+    });
+  }
+
+  delete base["off"];
+
+  return Object.values(base);
+};
 
 export const AnalysisGetPage = () => {
   const [params, setParams] = useSearchParams();
@@ -22,37 +71,52 @@ export const AnalysisGetPage = () => {
   const dateEnd = new Date(params.get("dateEnd") as string);
 
   const [clients, setClients] = useState<Client[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  const [dataForPieChart, setDataForPieChart] = useState<DataForPieChart[]>([]);
-
-  useEffect(() => {
-    console.log(clients);
-    console.log(
-      clients.reduce(
-        (acc, cur) => (acc + cur.type === ClientType.phys ? 1 : 0),
-        0
-      )
-    );
-    setDataForPieChart([
-      {
-        name: ClientType.law + " лицо",
+  const dataForPieChart = useMemo<DataForPieChart[]>(
+    () =>
+      Object.values(ClientType).map((type) => ({
+        name: type + " лицо",
         value: clients.reduce(
-          (acc, cur) => acc + (cur.type === ClientType.law ? 1 : 0),
+          (acc, cur) => acc + (cur.type === type ? 1 : 0),
           0
         ),
-      },
-      {
-        name: ClientType.phys + " лицо",
-        value: clients.reduce(
-          (acc, cur) => acc + (cur.type === ClientType.phys ? 1 : 0),
+      })),
+
+    [clients]
+  );
+  const labelsForPieChart = Object.values(ClientType).map(
+    (clientType) => clientType + " лицо"
+  );
+
+  const dataForBarChart = useMemo(
+    () =>
+      Object.values(ProjectType).map((type) => ({
+        name: type,
+        Всего: projects.reduce(
+          (acc, cur) => acc + (cur.type === type ? 1 : 0),
           0
         ),
-      },
-    ]);
-  }, [clients]);
+      })),
+    [projects]
+  );
+  const labelsForBarChart = Object.values(ProjectType);
+
+  const dataForLineChart = useMemo(() => countPoints(projects), [projects]);
+  const labelsForLineChart = Object.values(ProjectStatuses);
+  const colorsForLineChart = Object.values(PROJECT_STATUSES_COLORS);
 
   useEffect(() => {
     ClientsApi.getAllClients().then(setClients);
+    ProjectsApi.getAllProjects("", {
+      clients: [],
+      statuses: [],
+      types: [],
+      date: {
+        from: new Date(dateStart),
+        to: new Date(dateEnd),
+      },
+    }).then(setProjects);
   }, []);
 
   return (
@@ -62,40 +126,47 @@ export const AnalysisGetPage = () => {
           dateStart.toISOString().split("T")[0]
         } до ${dateEnd.toISOString().split("T")[0]}`}
       />
-      <div className={styles.chart}>
-        <span className={styles.chartTitle}>Доля типов клиентов</span>
-        <div className={styles.chartData}>
-          <PieChart width={200} height={200}>
-            <Pie
-              data={dataForPieChart}
-              cx="50%"
-              cy="50%"
-              isAnimationActive={true}
-              id="pie"
-              labelLine={true}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-              label
-            >
-              {dataForPieChart.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={CLIENT_TYPE_COLORS[index]} />
-              ))}
-            </Pie>
-          </PieChart>
-
-          <div className={styles.chartLabels}>
-            {Object.values(ClientType).map((client, index) => (
-              <div className={styles.chartLabel} key={index}>
-                <div
-                  className={styles.chartLabelColor}
-                  style={{ background: CLIENT_TYPE_COLORS[index] }}
-                ></div>
-                <span className={styles.chartLabelText}>{client} лицо</span>
-              </div>
-            ))}
-          </div>
+      <div style={{ display: "flex", gap: "64px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+          <Input
+            id="projects"
+            label="Кол-во проектов"
+            onChange={() => {}}
+            value={projects.length}
+            disabled
+            required={false}
+            width="128px"
+          />
+          <Input
+            id="clients"
+            label="Кол-во клиентов"
+            onChange={() => {}}
+            value={clients.length}
+            disabled
+            required={false}
+            width="128px"
+          />
         </div>
+        <CustomLineChart
+          colors={colorsForLineChart}
+          labels={labelsForLineChart}
+          title="Изменение статусов проектов"
+          data={dataForLineChart}
+        />
+      </div>
+      <div style={{ display: "flex", gap: "64px", justifyContent: "cetner" }}>
+        <CustomBarChart
+          colors={PROJECT_TYPE_COLORS}
+          title="Типы проектов"
+          data={dataForBarChart}
+          labels={labelsForBarChart}
+        />
+        <CustomPieChart
+          colors={CLIENT_TYPE_COLORS}
+          data={dataForPieChart}
+          labels={labelsForPieChart}
+          title="Доля типов клиентов"
+        />
       </div>
     </div>
   );

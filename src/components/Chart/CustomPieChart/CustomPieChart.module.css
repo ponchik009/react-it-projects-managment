@@ -1,0 +1,16 @@
+.chartLabel {
+  display: flex;
+  gap: 4px;
+}
+
+.chartLabelColor {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.chartLabelText {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+}

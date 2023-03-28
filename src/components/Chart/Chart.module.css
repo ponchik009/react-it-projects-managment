@@ -1,0 +1,43 @@
+/* Чарты */
+.chart {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+}
+
+.chartTitle {
+  padding-left: 48px;
+  font-weight: 500;
+  font-size: 24px;
+  color: #1d222d;
+}
+
+.chartData {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chartLabels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chartLabel {
+  display: flex;
+  gap: 4px;
+}
+
+.chartLabelColor {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.chartLabelText {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+}

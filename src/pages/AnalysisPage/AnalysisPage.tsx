@@ -34,6 +34,7 @@ export const AnalysisPage = () => {
             value={dateStart}
             onChange={onDateStartChange}
             type="date"
+            width="256px"
           />
           <Input
             id="dateEnd"
@@ -42,6 +43,7 @@ export const AnalysisPage = () => {
             value={dateEnd}
             onChange={onDateEndChange}
             type="date"
+            width="256px"
           />
         </div>
         <Button

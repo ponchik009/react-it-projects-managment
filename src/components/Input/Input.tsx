@@ -10,6 +10,7 @@ interface InputProps {
   type?: React.HTMLInputTypeAttribute;
   disabled?: boolean;
   color?: string;
+  width?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ export const Input: React.FC<InputProps> = ({
   type = "text",
   disabled = false,
   color = "rgba(0, 0, 0, 1)",
+  width = "512px",
 }) => {
   return (
     <label
@@ -45,7 +47,7 @@ export const Input: React.FC<InputProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        style={{ padding: "8px 16px", width: "512px", color }}
+        style={{ padding: "8px 16px", width, color }}
         disabled={disabled}
       />
     </label>

@@ -39,3 +39,15 @@ export interface Project {
   stage: ProjectStages;
   status: ProjectStatuses;
 }
+
+// Charts
+
+export interface DataForPieChart {
+  name: string;
+  value: number;
+}
+
+export interface DataForBarChart {
+  name: string;
+  Всего: number;
+}

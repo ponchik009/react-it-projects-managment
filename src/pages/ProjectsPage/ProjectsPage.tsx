@@ -74,6 +74,7 @@ export const ProjectsPage = () => {
       statuses,
       clients: "" + currentClient === "-1" ? [] : [+currentClient],
       types: currentType === "Все" ? [] : [currentType],
+      date: null,
     }).then(setProjects);
   }, [
     search,
