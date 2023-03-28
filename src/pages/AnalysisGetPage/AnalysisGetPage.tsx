@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+
 import { ClientsApi } from "../../api/clientsApi";
 import { ProjectsApi } from "../../api/projectsApi";
-import { Chart } from "../../components/Chart/Chart";
+
 import { CustomBarChart } from "../../components/Chart/CustomBarChart/CustomBarChart";
 import { CustomLineChart } from "../../components/Chart/CustomLineChart/CustomLineChart";
 import { CustomPieChart } from "../../components/Chart/CustomPieChart/CustomPieChart";
@@ -20,25 +20,44 @@ import { Client, DataForPieChart, Project } from "../../types/interfaces";
 // @ts-ignore
 import styles from "./AnalysisGetPage.module.css";
 
-const countPoints = (projects: Project[]) => {
-  const base: { [key: string]: any } = projects.reduce(
-    (acc, cur) => ({
-      ...acc,
-      [cur.dateStart.toISOString().split("T")[0]]: {
-        name: cur.dateStart.toISOString().split("T")[0],
-        [ProjectStatuses.work]: 0,
-        [ProjectStatuses.ended]: 0,
-        [ProjectStatuses.rejected]: 0,
-      },
-      [cur.dateEnd?.toISOString().split("T")[0] || "off"]: {
-        name: cur.dateEnd?.toISOString().split("T")[0] || "off",
-        [ProjectStatuses.work]: 0,
-        [ProjectStatuses.ended]: 0,
-        [ProjectStatuses.rejected]: 0,
-      },
-    }),
-    {}
+const countPoints = (projects: Project[], dateStart: Date, dateEnd: Date) => {
+  let base = {} as { [key: string]: any };
+
+  base[dateStart.toISOString().split("T")[0]] = {
+    name: dateStart.toISOString().split("T")[0],
+    [ProjectStatuses.work]: 0,
+    [ProjectStatuses.ended]: 0,
+    [ProjectStatuses.rejected]: 0,
+  };
+
+  base = Object.assign(
+    base,
+    projects.reduce(
+      (acc, cur) => ({
+        ...acc,
+        [cur.dateStart.toISOString().split("T")[0]]: {
+          name: cur.dateStart.toISOString().split("T")[0],
+          [ProjectStatuses.work]: 0,
+          [ProjectStatuses.ended]: 0,
+          [ProjectStatuses.rejected]: 0,
+        },
+        [cur.dateEnd?.toISOString().split("T")[0] || "off"]: {
+          name: cur.dateEnd?.toISOString().split("T")[0] || "off",
+          [ProjectStatuses.work]: 0,
+          [ProjectStatuses.ended]: 0,
+          [ProjectStatuses.rejected]: 0,
+        },
+      }),
+      {}
+    )
   );
+
+  base[dateEnd.toISOString().split("T")[0]] = {
+    name: dateEnd.toISOString().split("T")[0],
+    [ProjectStatuses.work]: 0,
+    [ProjectStatuses.ended]: 0,
+    [ProjectStatuses.rejected]: 0,
+  };
 
   for (let date of Object.keys(base)) {
     projects.forEach((p) => {
@@ -102,7 +121,10 @@ export const AnalysisGetPage = () => {
   );
   const labelsForBarChart = Object.values(ProjectType);
 
-  const dataForLineChart = useMemo(() => countPoints(projects), [projects]);
+  const dataForLineChart = useMemo(
+    () => countPoints(projects, new Date(dateStart), new Date(dateEnd)),
+    [projects]
+  );
   const labelsForLineChart = Object.values(ProjectStatuses);
   const colorsForLineChart = Object.values(PROJECT_STATUSES_COLORS);
 
