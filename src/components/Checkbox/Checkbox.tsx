@@ -27,6 +27,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onChange={onChange}
         checked={checked}
         disabled={disabled}
+        style={{ width: "fit-content" }}
       />
     </label>
   );

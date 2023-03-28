@@ -1,4 +1,7 @@
 import React from "react";
+import PhoneInput from "react-phone-input-2";
+
+import "./Input.css";
 
 interface InputProps {
   value: string | number;
@@ -42,14 +45,22 @@ export const Input: React.FC<InputProps> = ({
         )}
         <span>{label}</span>
       </div>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        style={{ padding: "8px 16px", width, color }}
-        disabled={disabled}
-      />
+      {type === "tel" ? (
+        <PhoneInput
+          country={"ru"}
+          value={value as string}
+          onChange={(phone) => onChange({ target: { value: phone } } as any)}
+        />
+      ) : (
+        <input
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          style={{ padding: "8px 16px", width, color }}
+          disabled={disabled}
+        />
+      )}
     </label>
   );
 };

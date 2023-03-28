@@ -85,7 +85,7 @@ export const ClientShowForm: React.FC<ClientShowFormProps> = ({
           label="Контактный телефон"
           onChange={() => {}}
           value={client.phone}
-          type="tel"
+          type="text"
           disabled
           required={false}
         />
