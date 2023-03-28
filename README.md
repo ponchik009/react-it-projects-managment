@@ -31,3 +31,8 @@
 ![изображение](https://user-images.githubusercontent.com/98012969/227927380-f9683351-35fa-4a71-bb6a-43d92c0362dd.png)
 
 ![изображение](https://user-images.githubusercontent.com/98012969/227927788-4600e888-8eb7-41e2-80e4-54f7aad1590a.png)
+
+![изображение](https://user-images.githubusercontent.com/98012969/228223159-f7c8848b-064b-4f71-a5e2-c3f2f53991d7.png)
+
+![изображение](https://user-images.githubusercontent.com/98012969/228223236-13c661c3-dc48-46d9-ba62-b752c0e6da9a.png)
+
